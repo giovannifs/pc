@@ -7,18 +7,27 @@ SERVER_USER="concurrent"
 PUBLIC_KEY_PATH="$BASE_DIR/keys/public_key.pem"
 SSH_KEY="$BASE_DIR/keys/concurrent_ssh_key"
 
-FILE_PATH=$1
-FILE_NAME=$(basename $FILE_PATH .txt)
+for FILE_PATH in $(ls $BASE_DIR/answers/);
+do
+	echo "Processing file $FILE_PATH"
+	echo "Encrypting your the file..."
 
-echo $BASE_DIR
-echo $FILE_NAME
+	# Encrypting your answer file using the Public Key
+	FILE_NAME=$(basename $FILE_PATH .txt)
+	openssl rsautl -encrypt -inkey $PUBLIC_KEY_PATH -pubin -in $BASE_DIR/answers/$FILE_PATH -out "$BASE_DIR/answers/$FILE_NAME"-encrypted.bin
 
-#ls -lh "~/.ssh/"
+	echo "Submitting the file..."
+	# Sending your encrypted answer file to the server
+	scp -i $SSH_KEY "$BASE_DIR/answers/$FILE_NAME"-encrypted.bin $SERVER_USER@$SERVER_ADRESS:/home/$SERVER_USER/answers/prova2/
+ 	
+	
+	EXIT_CODE=$?
+	if [ $EXIT_CODE -eq 0 ];
+	then 
+		echo "File $FILE_PATH submitted successfully"
+	else
+		echo "There was an error while submitting $FILE_PATH"
+	fi
 
-# Encrypting your answer file using the Public Key
-
-echo openssl rsautl -encrypt -inkey $PUBLIC_KEY_PATH -pubin -in $FILE_PATH -out "$BASE_DIR/$FILE_NAME"-encrypted.bin
-
-# Sending your encrypted answer file to the server
-
-echo scp -i $SSH_KEY "$BASE_DIR/$FILE_NAME"-encrypted.bin" $SERVER_USER@$SERVER_ADRESS:/home/$SERVER_USER/concurrent-answers/24.1/prova2/
+	rm "$BASE_DIR/answers/$FILE_NAME"-encrypted.bin
+done
