@@ -26,9 +26,9 @@ do
 	EXIT_CODE=$?
 	if [ $EXIT_CODE -eq 0 ];
 	then 
-		echo "File $FILE_PATH submitted successfully"
+		echo "File $FILE_PATH was submitted successfully."
 	else
-		echo "There was an error while submitting $FILE_PATH"
+		echo "There was an error while submitting the file $FILE_PATH"
 	fi
 
 	rm "$BASE_DIR/answers/$FILE_NAME"-encrypted.bin
