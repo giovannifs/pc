@@ -7,6 +7,8 @@ SERVER_USER="concurrent"
 PUBLIC_KEY_PATH="$BASE_DIR/keys/public_key.pem"
 SSH_KEY="$BASE_DIR/keys/concurrent_ssh_key"
 
+chmod 600 $SSH_KEY
+
 for FILE_PATH in $(ls $BASE_DIR/answers/);
 do
 	echo "Processing file $FILE_PATH"
