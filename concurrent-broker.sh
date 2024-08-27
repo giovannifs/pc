@@ -3,9 +3,9 @@
 BASE_DIR=$(dirname -- "$( readlink -f -- "$0"; )")
 
 SERVER_ADRESS=150.165.85.31
-SERVER_USER="ubuntu"
-PUBLIC_KEY_PATH="$BASE_DIR/key/public_key.pem"
-SSH_KEY="$BASE_DIR/key/id_concurrent_rsa"
+SERVER_USER="concurrent"
+PUBLIC_KEY_PATH="$BASE_DIR/keys/public_key.pem"
+SSH_KEY="$BASE_DIR/keys/concurrent_ssh_key"
 
 FILE_PATH=$1
 FILE_NAME=$(basename $FILE_PATH .txt)
